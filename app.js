@@ -1,14 +1,17 @@
 'use strict'
 
-const express = require('express');
-const app = express();
-
+const http = require('http');
+const fs = require('fs');
 const port = 8000;
 
-app.get('/', function (req, res) {
-    res.sendFile(__dirname + "/index.html");
+const server = http.createServer(function(req, res){
+    fs.readFile('index.html', 'utf-8', function(error, data){
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.write(data);
+        res.end();
+    });
 });
 
-app.listen(port)
-
-console.log("Listening on " + port);
+server.listen(port, function(){
+    console.log('Listening on ' + port);
+});

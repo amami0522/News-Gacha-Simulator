@@ -4,16 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous")>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
+<body class="container">
     <h1>News Gacha Simulator</h1>
     <p>ニュースを探したり、そもそも読むのもめんどくさくなったりしたことはありませんか？</p>
     <p>そんな人のためにランダムでニュースをピックアップしておすすめします。</p>
     <p>興味のある記事が見つかれば幸いです。</p>
     <form method="POST">
-        <p><input type="submit" value="ニュースガチャを引く"></p>
+        <p><input type="submit" value="10連ニュースガチャを引く" class="btn btn-info"></p>
     </form>
-    <table>
+    <table class="table-striped">
         <% for(var i = 0; i < Math.min(10, content.length); i++){ %>
         <tr>
             <td><img src=" <%- content[i].urlToImage %> >" width="300" height="200"></td>
@@ -24,6 +27,5 @@
     <footer>
         <small>powered by <a href="https://newsapi.org">newsAPI.org</a></small>
     </footer>
-<body>
 </body>
 </html>

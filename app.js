@@ -3,7 +3,7 @@ const http = require('http');
 const fs = require('fs');
 const ejs = require('ejs');
 const NewsApi = require('newsapi');
-const newsapi = new NewsApi('');
+const newsapi = new NewsApi('71a614c0ed5046f4ad28a1a242543879');
 const server = http.createServer();
 const template = fs.readFileSync(__dirname + '/views/index.ejs', 'utf-8');
 
@@ -25,6 +25,9 @@ server.on('request', function(req, res){
                     page: '1'
                 }).then(function(news){
                     news['articles'].forEach(function(item){
+                        if(item.urlToImage === ""){
+                            item.urlToImage = 'https://drive.google.com/uc?export=view&id=1AYrCCiLBNbKddN0miZX67-Ppk_WI49U3';
+                        }
                         content.push(item);
                     });
                 }).then(function(){

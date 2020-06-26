@@ -1,18 +1,19 @@
 'use strict'
-
 const http = require('http');
 const fs = require('fs');
 const ejs = require('ejs');
-const qs = require('querystring');
+const NewsApi = require('newsapi');
+const newsapi = new NewsApi('');
 const server = http.createServer();
-var template = fs.readFileSync(__dirname + '/views/index.ejs', 'utf-8');
-const port = 8080;
+const template = fs.readFileSync(__dirname + '/views/index.ejs', 'utf-8');
 
 var posts = [];
+var urls = [];
 
-function renderForm(posts, res){
+function renderForm(posts, urls, res){
     var data = ejs.render(template, {
-        posts: posts
+        posts: posts,
+        urls: urls
     });
     res.writeHead(200, {'Content-Type': 'text/html'});
     res.write(data);
@@ -20,23 +21,36 @@ function renderForm(posts, res){
 };
 
 server.on('request', function(req, res){
-    fs.readFile(__dirname + '/views/index.html', 'utf-8', function(err, data){
+    fs.readFile(__dirname + '/views/index.ejs', 'utf-8', function(err, data){
+        if(err){
+            res.writeHead(404, {'Content-Typr': 'text/plain'});
+            return res.end('Not Found');
+        }
         if(req.method === 'POST'){
-            req.data = "";
             req.on('readable', function(){
-                req.data += req.read();
-            });
-            req.on('end', function() {
-                var query = qs.parse(req.data);
-                if(query.content !== "") posts.push(query.content);
-                renderForm(posts, res);
+            }).on('end', function() {
+                newsapi.v2.topHeadlines({
+                    country: 'jp',
+                    pageSize: '100',
+                    page: '1'
+                }).then(function(news){
+                    news['articles'].forEach(function(item){
+                        posts.push(item.title);
+                        urls.push(item.url);
+                    });
+                }).then(function(){
+                    console.log(urls);
+                    renderForm(posts, urls, res);
+                });
             });
         }
         else{
-            renderForm(posts, res);
+            renderForm(posts, urls, res);
         }
     });
 });
+
+const port = process.env.PORT || 8080;
 
 server.listen(port, function(){
     console.log('Listening on ' + port);

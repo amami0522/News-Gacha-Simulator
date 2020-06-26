@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous")>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <style>
+        .cur{
+            padding: 15px;
+        }
+    </style>
 </head>
 <body class="container">
     <h1>News Gacha Simulator</h1>
@@ -19,8 +24,9 @@
     <table class="table-striped">
         <% for(var i = 0; i < Math.min(10, content.length); i++){ %>
         <tr>
-            <td><img src=" <%- content[i].urlToImage %> >" width="300" height="200"></td>
-            <td><a href=" <%- content[i].url %> "> <%= content[i].title %> </a></td>
+            <div>
+                <td class="cur"><a href=" <%- content[i].url %> "> <%= content[i].title %> </a></td>
+            </div>
         </tr>
         <% } %>
     </table>

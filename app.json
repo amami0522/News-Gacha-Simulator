@@ -1,0 +1,8 @@
+{
+    "name": "News-Gacha-Simulator",
+    "discription": "ランダムニュースガチャ",
+    "repository": "https://github.com/amami0522/News-Gacha-Simulator",
+    "logo": "",
+    "keywords": ["node"],
+    "image": "heroku/nodejs"
+}

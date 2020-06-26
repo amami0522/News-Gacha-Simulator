@@ -14,14 +14,10 @@
         <p><input type="submit" value="ニュースガチャを引く"></p>
     </form>
     <table>
+        <% for(var i = 0; i < Math.min(10, content.length); i++){ %>
         <tr>
-            <th></th>
-            <th>ニュース</th>
-        </tr>
-        <% for(var i = 0; i < posts.length; i++){ %>
-        <tr>
-            <td><img src="https://www.pakutaso.com/shared/img/thumb/PAK153130225_TP_V.jpg" width="300" height="200"></td>
-            <td><a href="<%- urls[i] %>"><%= posts[i] %></a></td>
+            <td><img src=" <%- content[i].urlToImage %> >" width="300" height="200"></td>
+            <td><a href=" <%- content[i].url %> "> <%= content[i].title %> </a></td>
         </tr>
         <% } %>
     </table>

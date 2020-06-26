@@ -3,22 +3,11 @@ const http = require('http');
 const fs = require('fs');
 const ejs = require('ejs');
 const NewsApi = require('newsapi');
-const newsapi = new NewsApi('');
+const newsapi = new NewsApi('71a614c0ed5046f4ad28a1a242543879');
 const server = http.createServer();
 const template = fs.readFileSync(__dirname + '/views/index.ejs', 'utf-8');
 
-var posts = [];
-var urls = [];
-
-function renderForm(posts, urls, res){
-    var data = ejs.render(template, {
-        posts: posts,
-        urls: urls
-    });
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    res.write(data);
-    res.end();
-};
+var content = [];
 
 server.on('request', function(req, res){
     fs.readFile(__dirname + '/views/index.ejs', 'utf-8', function(err, data){
@@ -29,26 +18,43 @@ server.on('request', function(req, res){
         if(req.method === 'POST'){
             req.on('readable', function(){
             }).on('end', function() {
+                content = [];
                 newsapi.v2.topHeadlines({
                     country: 'jp',
                     pageSize: '100',
                     page: '1'
                 }).then(function(news){
                     news['articles'].forEach(function(item){
-                        posts.push(item.title);
-                        urls.push(item.url);
+                        content.push(item);
                     });
                 }).then(function(){
-                    console.log(urls);
-                    renderForm(posts, urls, res);
+                    const rand = shuffle(content);
+                    renderForm(rand, res);
                 });
             });
         }
         else{
-            renderForm(posts, urls, res);
+            renderForm(content, res);
         }
     });
 });
+
+function renderForm(data, res){
+    var data = ejs.render(template, {
+        content: data
+    });
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.write(data);
+    res.end();
+};
+
+const shuffle = ([...array]) => {
+    for(let i = array.length - 1; i >= 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
 
 const port = process.env.PORT || 8080;
 

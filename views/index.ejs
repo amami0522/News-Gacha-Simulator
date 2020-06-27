@@ -11,6 +11,20 @@
         .cur{
             padding: 15px;
         }
+        .r,.sr,.ssr{
+            text-align: center;
+            font-weight: bold;
+            font-size: 120%;
+        }
+        .r{
+            color: silver;
+        }
+        .sr{
+            color: gold;
+        }
+        .ssr{
+            color: pink;
+        }
     </style>
 </head>
 <body class="container">
@@ -24,9 +38,14 @@
     <table class="table-striped">
         <% for(var i = 0; i < Math.min(10, content.length); i++){ %>
         <tr>
-            <div>
-                <td class="cur"><a href=" <%- content[i].url %> "> <%= content[i].title %> </a></td>
-            </div>
+            <% if(rare[i] <= 3){ %>
+                <td class="ssr">SSR</td>
+            <% } else if(rare[i] <= 18){ %>
+                <td class="sr">SR</td>
+            <% } else{ %>
+                <td class="r">R</td>
+            <% } %>
+            <td class="cur"><a href=" <%- content[i].url %> "> <%= content[i].title %> </a></td>
         </tr>
         <% } %>
     </table>

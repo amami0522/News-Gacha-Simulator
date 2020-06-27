@@ -3,11 +3,12 @@ const http = require('http');
 const fs = require('fs');
 const ejs = require('ejs');
 const NewsApi = require('newsapi');
-const newsapi = new NewsApi('');
+const newsapi = new NewsApi('71a614c0ed5046f4ad28a1a242543879');
 const server = http.createServer();
 const template = fs.readFileSync(__dirname + '/views/index.ejs', 'utf-8');
 
 var content = [];
+var rank = [];
 
 server.on('request', function(req, res){
     fs.readFile(__dirname + '/views/index.ejs', 'utf-8', function(err, data){
@@ -19,32 +20,33 @@ server.on('request', function(req, res){
             req.on('readable', function(){
             }).on('end', function() {
                 content = [];
+                rank = [];
                 newsapi.v2.topHeadlines({
                     country: 'jp',
                     pageSize: '100',
                     page: '1'
                 }).then(function(news){
                     news['articles'].forEach(function(item){
-                        if(item.urlToImage === ""){
-                            item.urlToImage = 'https://drive.google.com/uc?export=view&id=1AYrCCiLBNbKddN0miZX67-Ppk_WI49U3';
-                        }
+                        var tmp = Math.ceil(Math.random() * 100);
                         content.push(item);
+                        rank.push(tmp);
                     });
                 }).then(function(){
                     const rand = shuffle(content);
-                    renderForm(rand, res);
+                    renderForm(rand, rank, res);
                 });
             });
         }
         else{
-            renderForm(content, res);
+            renderForm(content, rank, res);
         }
     });
 });
 
-function renderForm(data, res){
+function renderForm(data, rank, res){
     var data = ejs.render(template, {
-        content: data
+        content: data,
+        rare: rank
     });
     res.writeHead(200, {'Content-Type': 'text/html'});
     res.write(data);

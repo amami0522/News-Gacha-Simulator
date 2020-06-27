@@ -3,7 +3,7 @@ const http = require('http');
 const fs = require('fs');
 const ejs = require('ejs');
 const NewsApi = require('newsapi');
-const newsapi = new NewsApi('');
+const newsapi = new NewsApi('71a614c0ed5046f4ad28a1a242543879');
 const server = http.createServer();
 const template = fs.readFileSync(__dirname + '/views/index.ejs', 'utf-8');
 
